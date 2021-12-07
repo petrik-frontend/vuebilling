@@ -49,3 +49,4 @@ Plusz feladatok
 * 12 - 18: 5
 * 19 - 21: 5 5 (plusz egy ötös)
 
+/xd
