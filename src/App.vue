@@ -1,18 +1,30 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+      <table>
+  <tr v-for="row in rows" v-bind:key="row">
+    <td>{(row.title)}</td>
+    <td>>{(row.price)}</td>
+    <td>>{(row.quantity)}</td>
+  </tr>
+  <tr>
+      <th>Title</th>
+  <th>Price</th>
+  <th>Quantity</th>
+  <th>Szum</th>
+
+  </tr>
+    <b-form-input v-model="text">title</b-form-input>
+    <b-form-input v-model="text">price</b-form-input>
+    <b-form-input v-model="text">quantity</b-form-input>
+</table>
   </div>
 </template>
 
+
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  },
   data() {
     return {
       rows: [
@@ -36,6 +48,25 @@ export default {
           price: 45120,
           quantity: 321
         },
+        methods:{
+          addRow: function(){
+            this.rows.push({});
+          },
+           addColumn: function(){
+             this.Columns.name(Operations);
+           this.Columns.push({});
+           var törles = new Vue({
+                 removeRow: function(row){
+                this.rows.$remove(row);
+    }
+})
+           var edit = new Vue({
+                 editRow: function(row){
+                this.rows.$edit(row);
+    }
+})
+           }
+    
       ]
     }
   }

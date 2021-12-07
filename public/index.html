@@ -13,5 +13,25 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <template>
+      <div>
+        <b-table striped hover :items="items"></b-table>
+      </div>
+    </template>
+    
+    <script>
+      export default {
+        data() {
+          return {
+            items: [
+              { title: '', price: 40, quantity:  40},
+              { title: '', price: 40, quantity:  40},
+              { title: '', price: 40, quantity:  40},
+              { title: '', price: 40, quantity:  40},
+            ]
+          }
+        }
+      }
+    </script>
   </body>
 </html>
