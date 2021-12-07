@@ -48,3 +48,4 @@ Plusz feladatok
 * 10 - 11: 4
 * 12 - 18: 5
 * 19 - 21: 5 5 (plusz egy ötös)
+
