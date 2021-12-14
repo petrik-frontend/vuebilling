@@ -1,4 +1,4 @@
-# [Név]
+# Palócz István
 
 ## Hogyan kezdj neki?
 
