@@ -7,48 +7,30 @@
           <th>Ár (Ft)</th>
           <th>DB</th>
           <th>Operations</th>
+          <th>Összérték (Ft)</th>
         </tr>
       </thead>
       <tbody>
-        
-        <tr v-for="row in rows" v-bind:key="row.title">
-          <td v-if="row.title != editedRow.old.title">{{ row.title }}</td>
-          <td v-if="row.title != editedRow.old.title">{{ row.price }}</td>
-          <td v-if="row.title != editedRow.old.title">{{ row.quantity }}</td>
-          <td v-if="row.title != editedRow.old.title">
-            <button @click="DeleteRow(row.title)">X</button>
-            <button @click="EditRow(row)">Edit</button>
-          </td>
-          <td v-if="row.title == editedRow.old.title">
-            <input type="text" v-model="editedRow.new.title">
-          </td>
-          <td v-if="row.title == editedRow.old.title">
-            <input type="number" v-model="editedRow.new.price">
-          </td>
-          <td v-if="row.title == editedRow.old.title">
-            <input type="number" v-model="editedRow.new.quantity">
-          </td>
-          <td v-if="row.title == editedRow.old.title">
-            <button @click="SaveRow">Save</button>
-          </td>
-        </tr>
-
-        <tr>
-          <td><input type="text" v-model="newRow.title"></td>
-          <td><input type="number" v-model="newRow.price"></td>
-          <td><input type="number" v-model="newRow.quantity"></td>
-          <td><button @click="AddNew">Add</button></td>
-        </tr>
+        <RowEditor
+          v-for="row in rows"
+          v-bind:key="row.title" 
+          :row="row"
+          @save-row="SaveRow"
+          @delete-row="DeleteRow"
+        /> 
+        <RowEditor @add-new-row="AddNewRow"/>
+        <tr><th colspan="4">Össz total</th><td>{{ total }}</td></tr>
       </tbody>
     </table>
   </div>
 </template>
 
 <script>
-
+import RowEditor from './components/RowEditor.vue'
 export default {
   name: 'App',
   components: {
+    RowEditor
   },
   data() {
     return {
@@ -94,8 +76,36 @@ export default {
     }
   },
   methods: {
-    AddNew () {
-      this.rows.push({... this.newRow})
+    AddNewRow (row) {
+      let exists = false
+      this.rows.forEach(function(item){
+        if (item.title == row.title) {
+          exists = true
+        }
+      })
+      if (!exists) {
+        this.rows.push({...row})
+      }
+      else {
+        if (row.price == null || row.price=="") {
+          this.rows.map(function(item){
+            if (item.title == row.title) {
+              item.quantity = 
+              parseInt(item.quantity) + 
+              parseInt(row.quantity)
+            }
+            return item
+          })
+        }
+        else {
+          this.rows = this.rows.map(function (item){
+            if (item.title != row.title) {
+              return item
+            }
+            return row
+          })
+        }
+      }
     },
     DeleteRow(title) {
       this.rows = this.rows.filter(function (item){
@@ -106,8 +116,7 @@ export default {
       this.editedRow.old = {...editedRow}
       this.editedRow.new = {...editedRow}
     },
-    SaveRow () {
-      let editedRow = {...this.editedRow}
+    SaveRow (editedRow) {
       this.rows = this.rows.map(function (item) {
         if (item.title != editedRow.old.title) {
           return item
@@ -115,6 +124,15 @@ export default {
         return {...editedRow.new}
       })
       this.editedRow.old.title = ''
+    }
+  },
+  computed: {
+    total() {
+      let total = 0
+      this.rows.forEach(function(item){
+        total += item.price * item.quantity
+      })
+      return total
     }
   }
 }
